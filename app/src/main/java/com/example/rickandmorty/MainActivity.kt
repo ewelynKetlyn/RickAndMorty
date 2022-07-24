@@ -3,6 +3,8 @@ package com.example.rickandmorty
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.rickandmorty.network.ApiClient
 import com.example.rickandmorty.network.CharacterResponse
 import retrofit2.Call
@@ -25,6 +27,14 @@ class MainActivity : AppCompatActivity() {
             ){
                 if (response.isSuccessful){
                     Log.d("Characters", ""+response.body())
+
+                    val result = response.body()?.result
+                    result?.let {
+                        val adapter = MainAdapter(result)
+                        val recyclerView = findViewById<RecyclerView>(R.id.charactersRv)
+                        recyclerView?.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                        recyclerView?.adapter = adapter
+                    }
                 }
             }
 
